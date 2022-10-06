@@ -24,12 +24,11 @@ export class VideoComponent implements OnInit {
     // await this.agoraRTC.leaveCall();
     this.route.params.subscribe((params) => {
       this.uid = this.route.snapshot.paramMap.get('uid') || '';
-      this.uid = '527841';
+      this.uid = this.uid + '_' + this.agoraRTC.uuid();
       this.agoraRTC.options.channel =
         this.route.snapshot.paramMap.get('channel') || '';
       this.startCall();
-      this.getAcquire();
-      console.log('1========>', this.uid, this.agoraRTC.options.channel);
+      // this.getAcquire();
     });
   }
   async startCall() {
