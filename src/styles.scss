@@ -1,0 +1,74 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import "~bootstrap/scss/bootstrap";
+@import "~ngx-toastr/toastr";
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
+html,
+body {
+  height: 100%;
+}
+.container-fluid {
+  height: 100%;
+  overflow-y: hidden; /* don't show content that exceeds my height */
+  background: rgb(238, 174, 202);
+  background: radial-gradient(
+    circle,
+    rgba(238, 174, 202, 1) 0%,
+    rgba(148, 187, 233, 1) 100%
+  );
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.chat-box {
+  position: relative;
+  height: 90vh;
+  background-color: antiquewhite;
+  .input-box {
+    position: absolute;
+    bottom: 0;
+    padding: 5px;
+  }
+}
+
+.msg-container {
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 5px;
+  color: black;
+  border: black solid 1px;
+}
+.join-box {
+  top: 25%;
+  position: relative;
+}
+// #me {
+//   height: 150px;
+// }
+// #other {
+//   height: 400px;
+// }
+// #me-title {
+//   min-height: 30px;
+// }
+.p-relative {
+  position: relative;
+}
+.middle {
+  bottom: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+.h-150{
+    height: 150px;
+}
+.h-250{
+    height: 250px;
+}
+.min-h-30{
+    min-height: 30px;
+}

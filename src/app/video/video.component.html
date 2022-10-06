@@ -1,0 +1,160 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-flex justify-content-end   p-3 bg-dark text-white">
+      <button type="button"  (click)="agoraRTC.setBackgroundBlurring()" class="btn btn-sm btn-success ms-1">Blur Background</button>
+      <button type="button"  (click)="agoraRTC.setBackgroundColor()" class="btn btn-sm btn-success ms-1">Color Background</button>
+      <button type="button"  (click)="agoraRTC.setBackgroundImage()" class="btn btn-sm btn-success ms-1">Image Background</button>
+      <button type="button"  (click)="agoraRTC.removeBackgroundAffect()" class="btn btn-sm btn-warning   ms-1">Remove Background</button>
+    </div>
+  </div>
+  <div *ngIf="agoraRTC.rtc.name" class="row mt-2">
+    <div class="col-9 p-0">
+      <div class="row m-0">
+        <div
+          class="col border border-dark p-0 p-relative m-1"
+          [ngClass]="agoraRTC.remoteUsers.length <= 1 ? (agoraRTC.rtc?.isScreenShareStart ? 'col-8' : 'col-4') : 'col'"
+        >
+          <div
+            id="me-title"
+            class="d-flex justify-content-center bg-dark text-white min-h-30"
+          >{{agoraRTC.rtc.name}} (You)</div>
+          <div id="me" class="d-flex justify-content-center h-250"></div>
+          <div class="d-flex justify-content-center p-2 middle">
+            <button
+              *ngIf="agoraRTC?.rtc?.isAudioMuted"
+              type="button"
+              class="btn btn-sm btn-danger"
+              (click)="agoraRTC.setEnabledAudioYourSelf(true)"
+            >
+              <i class="bi bi-mic-mute"></i>
+            </button>
+            <button
+              *ngIf="!agoraRTC?.rtc?.isAudioMuted"
+              type="button"
+              class="btn btn-sm btn-outline-secondary"
+              (click)="agoraRTC.setEnabledAudioYourSelf(false)"
+            >
+              <i class="bi bi-mic"></i>
+            </button>
+            <button
+              *ngIf="agoraRTC?.rtc?.isVideoMuted"
+              type="button"
+              class="btn btn-sm btn-danger ms-1"
+              (click)="agoraRTC.setEnabledVideoYourSelf(true)"
+            >
+              <i class="bi-camera-video-off"></i>
+            </button>
+            <button
+              *ngIf="!agoraRTC?.rtc?.isVideoMuted"
+              type="button"
+              class="btn btn-sm btn-outline-secondary ms-1"
+              (click)="agoraRTC.setEnabledVideoYourSelf(false)"
+            >
+              <i class="bi-camera-video"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm btn-danger ms-1"
+              (click)="logout()"
+            >
+              <i class="bi bi-telephone-minus"></i>
+            </button>
+            <button
+              *ngIf="!agoraRTC?.rtc?.isScreenShareStart"
+              type="button"
+              class="btn btn-sm btn-success ms-1"
+              (click)="startScreenShare()"
+            >
+            <i class="bi bi-share"></i>
+            </button>
+            <button
+              *ngIf="agoraRTC?.rtc?.isScreenShareStart"
+              type="button"
+              class="btn btn-sm btn-danger ms-1"
+              (click)="stopScreenShare()"
+            >
+            <i class="bi bi-share"></i>
+            </button>
+          </div>
+        </div>
+        <!-- <div id="shareScreen" class="col border border-dark p-0 p-relative m-1 h-250"></div> -->
+        <ng-container *ngFor="let user of agoraRTC?.remoteUsers">
+          <div
+            class="col border border-dark p-0 p-relative m-1"
+            [ngClass]="agoraRTC.remoteUsers.length <= 1 ? 'col-4' : 'col'"
+          >
+            <div
+              class="d-flex justify-content-center bg-dark text-white min-h-30"
+            >
+              {{ user.name }}
+            </div>
+            <div
+              [id]="user.id + '_parent'"
+              class="d-flex justify-content-center h-250"
+            ></div>
+            <div class="d-flex justify-content-center p-2 middle">
+              <button
+                *ngIf="user?.isAudioMuted"
+                type="button"
+                class="btn btn-sm btn-danger"
+              >
+                <i class="bi bi-mic-mute"></i>
+              </button>
+              <button
+                *ngIf="!user.isAudioMuted"
+                type="button"
+                class="btn btn-sm btn-outline-secondary"
+              >
+                <i class="bi bi-mic"></i>
+              </button>
+              <button
+                *ngIf="user?.isVideoMuted"
+                type="button"
+                class="btn btn-sm btn-danger ms-1"
+              >
+                <i class="bi-camera-video-off"></i>
+              </button>
+              <button
+                *ngIf="!user.isVideoMuted"
+                type="button"
+                class="btn btn-sm btn-outline-secondary ms-1"
+              >
+                <i class="bi-camera-video"></i>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="col">
+      <app-chat
+        [messages]="agoraRTC.messages"
+        (newTextEvent)="agoraRTC.sendMessage($event)"
+      ></app-chat>
+      <!-- <div class="row border border-dark m-0">
+          <div class="col">
+            <div class="d-flex justify-content-center p-1">
+              <button *ngIf="agoraRTC?.rtc?.isAudioMuted" type="button" class="btn btn-sm btn-danger" (click)="agoraRTC.setMuteAudioYourSelf(false)">
+                <i class="bi bi-mic-mute"></i>
+              </button>
+              <button *ngIf="!agoraRTC?.rtc?.isAudioMuted" type="button" class="btn btn-sm btn-outline-secondary" (click)="agoraRTC.setMuteAudioYourSelf(true)">
+                <i class="bi bi-mic"></i>
+              </button>
+              <button *ngIf="agoraRTC?.rtc?.isVideoMuted" type="button" class="btn btn-sm btn-danger ms-1" (click)="agoraRTC.setMuteVideoYourSelf(false)">
+                <i class="bi-camera-video-off"></i>
+              </button>
+              <button *ngIf="!agoraRTC?.rtc?.isVideoMuted" type="button" class="btn btn-sm btn-outline-secondary ms-1" (click)="agoraRTC.setMuteVideoYourSelf(true)">
+                <i class="bi-camera-video"></i>
+              </button>
+              <button  type="button" class="btn btn-sm btn-danger ms-1" (click)="logout()">
+                <i class="bi bi-telephone-minus"></i>
+              </button>
+            </div>
+          </div>
+      </div> -->
+    </div>
+    <!-- <div class="col-3 bg-secondary p-2 m-1 text-white">
+      <app-chat [messages]="messages" (newTextEvent)="sendMessage($event)"></app-chat>
+    </div> -->
+  </div>
+</div>
